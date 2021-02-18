@@ -78,7 +78,7 @@ function compute_weights_chunk(inds::TriuInd, ZZ::Vector{Vector{Int8}}, thresh::
     return W
 end
 
-function compute_weights(cZ::Vector{Vector{T}}, θ::Real, N::Int, M::Int; verbose::Bool = true) where {T<:Union{Int8,UInt64}}
+function compute_weights(cZ::Vector{<:Vector{<:Union{Int8,UInt64}}}, θ::Real, N::Int, M::Int; verbose::Bool = true)
     θ = Float64(θ)
 
     Meff = 0.0

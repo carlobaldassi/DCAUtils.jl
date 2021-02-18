@@ -69,6 +69,11 @@ end
             W, Meff = compute_weights(Z, θ; verbose = false)
             @test Meff ≈ sum(W)
             @test W ≈ resdict["W"][(mgf, rd, θ)]
+            # test slow fallback too
+            θ2 = θ == :auto ? resdict["θ"][(mgf,rd)] : θ
+            W2, Meff2 = compute_weights([Z[:,i] for i in 1:size(Z,2)], θ2, size(Z)...; verbose = false)
+            @test Meff2 ≈ sum(W2)
+            @test W2 ≈ resdict["W"][(mgf, rd, θ)]
         end
     end
 end
