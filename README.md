@@ -1,7 +1,7 @@
 Direct Coupling Analysis utilities
 ==================================
 
-![CI][CI-url] [![][codecov-img]][codecov-url] [![CODECOV][codecov-img]][codecov-url]
+![CI][CI-url] [![CODECOV][codecov-img]][codecov-url]
 
 Overview
 --------
@@ -20,3 +20,5 @@ The documentation is work-in-progress.
 
 [codecov-img]: https://codecov.io/gh/carlobaldassi/DCAUtils.jl/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/carlobaldassi/DCAUtils.jl
+
+[GaussDCA]: https://github.com/carlobaldassi/GaussDCA.jl
