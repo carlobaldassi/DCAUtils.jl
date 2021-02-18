@@ -1,0 +1,7 @@
+[test_data]
+git-tree-sha1 = "ee18ecf8fdf9df021780870c0f6eb9a00b49d9f4"
+lazy = true
+
+    [[test_data.download]]
+    url = "https://github.com/carlobaldassi/DCAUtils_jl_test_data/raw/7909156cc417eb3f8d9a5227e75fe8607aebbd77/dcautils_jl_test_data.tar.gz"
+    sha256 = "da5846988f7d4ddb8108bb4320dc3bc5169c693502d80a17f03d2288a91c043d"
