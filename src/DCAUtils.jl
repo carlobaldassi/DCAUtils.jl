@@ -123,7 +123,7 @@ function compute_weighted_frequencies(Z::Matrix{Int8}, W::Vector{Float64}, Meff:
     Pij = zeros(Ns, Ns)
     Pi = zeros(Ns)
 
-    ZZ = Vector{Int8}[vec(Z[i,:]) for i = 1:N]
+    ZZ = Vector{Int8}[Z[i,:] for i = 1:N]
 
     i0 = 0
     for i = 1:N
