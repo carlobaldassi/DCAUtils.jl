@@ -78,6 +78,28 @@ function compute_weights_chunk(inds::TriuInd, ZZ::Vector{Vector{Int8}}, thresh::
     return W
 end
 
+"""
+    compute_weights(Z::Matrix{Int8}, [q::Integer,] θ; verbose::Bool = true) -> (Vector{Float64}, Float64)
+
+This function computes the reweighting vector. It retuns the vector and its sum `Meff` (the latter
+represents the number of "effective" sequences).
+
+`Z` is an \$N × M\$ multiple sequence aLignment (see [`read_fasta_alignment`](@ref)). \$N\$
+is the length of each sequence and \$M\$ the number of sequences.
+
+`q` is the maximum value in the alphabet, if omitted it's computed from `maximum(Z)`.
+
+`θ` is the distance threshold: for any sequence, the number \$n\$ of sequences (including itself)
+that are at normalized distance smaller than \$⌊θN⌋\$ is counted, and the weight of that sequence
+is then \$1/n\$.
+
+`θ` can be a real value between 0 and 1, or the symbol `:auto`, in which case the
+[`compute_theta`](@ref) function is used.
+
+This function can use multiple threads if available.
+"""
+function compute_weights end
+
 function compute_weights(cZ::Vector{<:Vector{<:Union{Int8,UInt64}}}, θ::Real, N::Int, M::Int; verbose::Bool = true)
     θ = Float64(θ)
 

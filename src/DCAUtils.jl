@@ -24,6 +24,13 @@ macro hash(x)
     return Expr(:call, tst ? :sum : :hash, esc(x))
 end
 
+"""
+    remove_duplicate_sequences(Z::Matrix{Int8}; verbose::Bool = true) -> (Matrix{Int8}, Vector{Int})
+
+Takes a matrix representing a mutiple sequence alignment (see [`read_fasta_alignment`](@ref))
+and returns a new matrix with all duplicated sequences removed. It also returns a vector of column
+indices with the positions of the unique sequences in the input matrix.
+"""
 function remove_duplicate_sequences(Z::Matrix{Int8}; verbose::Bool = true)
     N, M = size(Z)
     hZ = Array{UInt}(undef, M)
@@ -69,6 +76,32 @@ function remove_duplicate_sequences(Z::Matrix{Int8}; verbose::Bool = true)
     verbose && println("done: $M -> $newM")
     return newZ, uniqueseqs
 end
+
+"""
+    compute_weighted_frequencies(Z::Matrix{Int8}, W::Vector{Float64}) -> (Vector{Float64}, Matrix{Float64})
+
+Given a multiple sequence alignment matrix `Z` (see [`read_fasta_alignment`](@ref)), and a vector
+of weights (see [`compute_weights`](@ref)), returns the empirical one- and two-point frequencies
+\$P_i\$ and \$P_{ij}\$.
+
+If `Z` has size \$N × M\$ (\$M\$ sequences of length \$N\$), and its maximum value (the size of the
+alphabet) is \$q\$, the resulting vector \$P_i\$ has length \$N (q-1)\$ and contains \$N\$ blocks
+(one for each residue position), each block containing the frequencies of the amino-acids, weighted
+according to `W`.  The frequency of the last symbol, which usually represents the gap, is omitted
+and cen be recovered by normalization. The resulting matrix \$P_{ij}\$ has size \$N (q-1) × N
+(q-1)\$ and it also has a block structure, with \$N × N\$ blocks, one for each pair of residues
+(the last row and column of each block are omitted and can be recovered by normalization).
+
+
+    compute_weighted_frequencies(Z::Matrix{Int8}, [q,] θ) -> (Vector{Float64}, Matrix{float64}, Float64, Vector{Float64})
+
+This form of the function just calls [`compute_weights`](@ref) with the given values of `θ` and `q`
+and then uses the result to call the version desrcibed above.
+
+Besides returning the one- and two-point frequencies, it also returns the result of
+`compute_weights`: the `Meff` and the reweighting vector.
+"""
+function compute_weighted_frequencies end
 
 compute_weighted_frequencies(Z::Matrix{Int8}, θ::Union{Real,Symbol}) = compute_weighted_frequencies(Z, maximum(Z), θ)
 
@@ -131,6 +164,19 @@ function compute_weighted_frequencies(Z::Matrix{Int8}, W::Vector{Float64}, Meff:
     return Pi, Pij
 end
 
+"""
+    add_pseudocount(Pi::Vector{Float64}, Pij::Matrix{Float64}, pc::Float64, q::Integer = 21) -> (Vector{Float64}, Matrix{Float64})
+
+This function takes one- and two-points frequencies (see [`compute_weighted_frequencies`](@ref))
+and returns the corresponding frequencies with a pseudocount `pc` added.
+
+The resulting frequencies are the same that would be obtained by mixing the original data with
+weight `(1-pc)` with a uniform distribution with weight `pc`. So `pc` must be between 0 (returns a
+copy of the original data) and 1 (returns the frequencies for the uniform distribution).
+
+The integer `q` is used to specify the block size of the matrices (each block has size
+\$(q-1)×(q-1)\$).
+"""
 function add_pseudocount(Pi_true::Vector{Float64}, Pij_true::Matrix{Float64}, pc::Float64, q::Integer = 21)
     Nq = length(Pi_true)
     s = q - 1

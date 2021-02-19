@@ -53,4 +53,3 @@ function compute_DI(mJ::Matrix{Float64}, C::Matrix{Float64}, q::Integer = 21)
 
     return DI
 end
-

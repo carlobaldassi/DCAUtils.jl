@@ -81,6 +81,14 @@ function compute_dists(cZ::Vector{<:Vector{<:Union{Int8,UInt64}}}, N::Int, M::In
     return D
 end
 
+"""
+    compute_dists(Z::Matrix{Int8}) -> Matrix{Float64}
+
+This function computes the matrix of normalized Hamming distances between sequences of the multiple
+sequence alignment `Z` (see [`read_fasta_alignment`](@ref)).
+
+This function can use multiple threads if available.
+"""
 function compute_dists(Z::Matrix{Int8})
     N, M = size(Z)
     cZ = Z_to_cZ(Z, maximum(Z))

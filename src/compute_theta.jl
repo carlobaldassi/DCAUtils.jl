@@ -81,6 +81,21 @@ function compute_theta(cZ::Vector{<:Vector{<:Union{Int8,UInt64}}}, N::Int, M::In
     return θ
 end
 
+"""
+    compute_theta(Z::Matrix{Int8}) -> Float64
+
+This function computes the threshold as used by the `:auto` setting of [`compute_weights`](@ref)
+(but it is more efficient computationally to use the `:auto` option than to invoke this function
+and passing the result to `compute_weights`).
+
+It computes the mean value \$ϕ\$ of the similarity fraction between all possible pairs of sequences
+in `Z` (the similarity fraction is the number of equal entries divided by the length of the
+sequences).
+
+The result is then computed as \$θ = \\min(0.5, 0.1216 / ϕ)\$.
+
+This function can use multiple threads if available.
+"""
 function compute_theta(Z::Matrix{Int8})
     N, M = size(Z)
     cZ = Z_to_cZ(Z, maximum(Z))
