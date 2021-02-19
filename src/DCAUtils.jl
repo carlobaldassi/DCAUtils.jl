@@ -1,7 +1,5 @@
 module DCAUtils
 
-using LinearAlgebra
-
 export read_fasta_alignment,
        remove_duplicate_sequences,
        compute_theta,
@@ -80,96 +78,6 @@ function remove_duplicate_sequences(Z::Matrix{Int8}; verbose::Bool = true)
 end
 
 """
-    compute_weighted_frequencies(Z::Matrix{Int8}, W::Vector{Float64} [, q]) -> (Vector{Float64}, Matrix{Float64})
-
-Given a multiple sequence alignment matrix `Z` (see [`read_fasta_alignment`](@ref)), and a vector
-of weights (see [`compute_weights`](@ref)), returns the empirical one- and two-point frequencies
-\$P_i\$ and \$P_{ij}\$.
-
-`q` is the size of the alphabet, if not given it's computed as `maximum(Z)`.
-
-If `Z` has size \$N × M\$ (i.e. \$M\$ sequences of length \$N\$), the resulting vector \$P_i\$ has
-length \$N (q-1)\$ and contains \$N\$ blocks (one for each residue position), each block containing
-the frequencies of the amino-acids, weighted according to `W`. The frequency of the last symbol,
-which usually represents the gap, is omitted and can be recovered by normalization. The resulting
-matrix \$P_{ij}\$ has size \$N (q-1) × N (q-1)\$ and it also has a block structure, with \$N × N\$
-blocks, one for each pair of residues (the last row and column of each block are omitted and can be
-recovered by normalization).
-
-    compute_weighted_frequencies(Z::Matrix{Int8}, [q,] θ) -> (Vector{Float64}, Matrix{float64}, Float64, Vector{Float64})
-
-This form of the function just calls [`compute_weights`](@ref) with the given values of `θ` and `q`
-and then uses the result to call the version desrcibed above.
-
-Besides returning the one- and two-point frequencies, it also returns the result of
-`compute_weights`: the `Meff` and the reweighting vector.
-"""
-function compute_weighted_frequencies end
-
-compute_weighted_frequencies(Z::Matrix{Int8}, θ::Union{Real,Symbol}) = compute_weighted_frequencies(Z, maximum(Z), θ)
-
-function compute_weighted_frequencies(Z::Matrix{Int8}, q::Integer, θ::Union{Real,Symbol})
-    W, Meff = compute_weights(Z, q, θ)
-    Pi_true, Pij_true = compute_weighted_frequencies(Z, W, Meff, q)
-    return Pi_true, Pij_true, Meff, W
-end
-
-compute_weighted_frequencies(Z::Matrix{Int8}, W::Vector{Float64}) = compute_weighted_frequencies(Z, W, maximum(Z))
-compute_weighted_frequencies(Z::Matrix{Int8}, W::Vector{Float64}, q::Integer) = compute_weighted_frequencies(Z, W, sum(W), q)
-compute_weighted_frequencies(Z::Matrix{Int8}, W::Vector{Float64}, Meff::Float64) = compute_weighted_frequencies(Z, W, Meff, maximum(Z))
-
-function compute_weighted_frequencies(Z::Matrix{Int8}, W::Vector{Float64}, Meff::Float64, q::Integer)
-    N, M = size(Z)
-    s = q - 1
-
-    Ns = N * s
-
-    Pij = zeros(Ns, Ns)
-    Pi = zeros(Ns)
-
-    ZZ = Vector{Int8}[Z[i,:] for i = 1:N]
-
-    i0 = 0
-    for i = 1:N
-        Zi = ZZ[i]
-        for k = 1:M
-            a = Zi[k]
-            a == q && continue
-            Pi[i0 + a] += W[k]
-        end
-        i0 += s
-    end
-    Pi ./= Meff
-
-    Pij[diagind(Pij)] .= Pi
-
-    block = zeros(s, s)
-
-    i0 = 0
-    for i = 1:N
-        Zi = ZZ[i]
-        j0 = i0 + s
-        for j = (i+1):N
-            Zj = ZZ[j]
-            fill!(block, 0.0)
-            for k = 1:M
-                a = Zi[k]
-                b = Zj[k]
-                (a == q || b == q) && continue
-                block[a, b] += W[k]
-            end
-            block ./= Meff
-            Pij[i0.+(1:s), j0.+(1:s)] = block
-            Pij[j0.+(1:s), i0.+(1:s)] = block'
-            j0 += s
-        end
-        i0 += s
-    end
-
-    return Pi, Pij
-end
-
-"""
     add_pseudocount(Pi::Vector{Float64}, Pij::Matrix{Float64}, pc::Float64, q::Integer = 21) -> (Vector{Float64}, Matrix{Float64})
 
 This function takes one- and two-points frequencies (see [`compute_weighted_frequencies`](@ref))
@@ -211,6 +119,7 @@ end
 include("compute_theta.jl")
 include("compute_weights.jl")
 include("compute_dists.jl")
+include("compute_weighted_frequencies.jl")
 include("compute_DI_gauss.jl")
 include("compute_FN.jl")
 
