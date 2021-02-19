@@ -1,7 +1,7 @@
 Direct Coupling Analysis utilities
 ==================================
 
-![CI][CI-url] [![CODECOV][codecov-img]][codecov-url]
+[![DOCS][docs-img]][docs-url] ![CI][CI-url] [![CODECOV][codecov-img]][codecov-url]
 
 Overview
 --------
@@ -12,7 +12,7 @@ protein families.
 
 This code was originally written for [GaussDCA.jl][GaussDCA].
 
-The documentation is work-in-progress.
+See the [documentation][docs-url] for details.
 
 [wikiDCA]: https://en.wikipedia.org/wiki/Direct_coupling_analysis
 
@@ -20,5 +20,8 @@ The documentation is work-in-progress.
 
 [codecov-img]: https://codecov.io/gh/carlobaldassi/DCAUtils.jl/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/carlobaldassi/DCAUtils.jl
+
+[docs-img]: https://img.shields.io/badge/docs-stable-blue.svg
+[docs-url]: https://carlobaldassi.github.io/DCAUtils.jl/stable
 
 [GaussDCA]: https://github.com/carlobaldassi/GaussDCA.jl
