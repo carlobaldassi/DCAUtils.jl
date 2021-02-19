@@ -122,7 +122,7 @@ end
             Pij_pc = resdict["Pij_pc"][(mgf, rd, θ, pc)]
             C = Pij_pc - Pi_pc * Pi_pc'
             mJ = inv(cholesky(C))
-            DI = compute_DI(mJ, C)
+            DI = compute_DI_gauss(mJ, C)
             @test DI ≈ resdict["DI"][(mgf, rd, θ, pc)]
         end
     end

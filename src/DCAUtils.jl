@@ -7,7 +7,7 @@ export read_fasta_alignment,
        compute_dists,
        compute_weighted_frequencies,
        add_pseudocount,
-       compute_DI,
+       compute_DI_gauss,
        compute_FN
 
 include("read_fasta_alignment.jl")
@@ -206,7 +206,7 @@ end
 include("compute_theta.jl")
 include("compute_weights.jl")
 include("compute_dists.jl")
-include("compute_DI.jl")
+include("compute_DI_gauss.jl")
 include("compute_FN.jl")
 
 end # module
