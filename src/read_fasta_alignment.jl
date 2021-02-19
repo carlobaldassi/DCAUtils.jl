@@ -17,7 +17,7 @@ The mapping between the aminoacid symbols and the integers uses this table:
   1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
 ```
 
-Any unrecognized capital letter and the gap symbol '-' are mapped to the value 21; any other
+Any unrecognized capital letter and the gap symbol `-` are mapped to the value 21; any other
 symbol or lowercase letter is ignored.
 
 If a sequence contains a fraction of gaps that exceeds `max_gap_fraction`, it is discarded. Set this

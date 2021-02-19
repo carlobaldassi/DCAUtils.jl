@@ -84,12 +84,12 @@ Given a multiple sequence alignment matrix `Z` (see [`read_fasta_alignment`](@re
 of weights (see [`compute_weights`](@ref)), returns the empirical one- and two-point frequencies
 \$P_i\$ and \$P_{ij}\$.
 
-If `Z` has size \$N × M\$ (\$M\$ sequences of length \$N\$), and its maximum value (the size of the
-alphabet) is \$q\$, the resulting vector \$P_i\$ has length \$N (q-1)\$ and contains \$N\$ blocks
-(one for each residue position), each block containing the frequencies of the amino-acids, weighted
-according to `W`.  The frequency of the last symbol, which usually represents the gap, is omitted
-and cen be recovered by normalization. The resulting matrix \$P_{ij}\$ has size \$N (q-1) × N
-(q-1)\$ and it also has a block structure, with \$N × N\$ blocks, one for each pair of residues
+If `Z` has size \$N × M\$ (i.e. \$M\$ sequences of length \$N\$), and its maximum value (the size
+of the alphabet) is \$q\$, the resulting vector \$P_i\$ has length \$N (q-1)\$ and contains \$N\$
+blocks (one for each residue position), each block containing the frequencies of the amino-acids,
+weighted according to `W`.  The frequency of the last symbol, which usually represents the gap, is
+omitted and can be recovered by normalization. The resulting matrix \$P_{ij}\$ has size \$N (q-1) ×
+N (q-1)\$ and it also has a block structure, with \$N × N\$ blocks, one for each pair of residues
 (the last row and column of each block are omitted and can be recovered by normalization).
 
 
