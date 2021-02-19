@@ -135,7 +135,7 @@ function compute_weighted_frequencies(Z::Matrix{Int8}, W::Vector{Float64}, Meff:
         end
         i0 += s
     end
-    Pi /= Meff
+    Pi ./= Meff
 
     i0 = 0
     for i = 1:N
