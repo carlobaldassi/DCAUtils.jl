@@ -2,6 +2,9 @@ module ReadFastaAlignment
 
 using FastaIO
 
+# this is silly but it's required for correct cross-linking in docstrings, apparently
+using ...DCAUtils
+
 export read_fasta_alignment
 
 """
@@ -23,7 +26,9 @@ symbol or lowercase letter is ignored.
 If a sequence contains a fraction of gaps that exceeds `max_gap_fraction`, it is discarded. Set this
 value to 1 to keep all the sequences.
 
-The input file can optionally be compressed with gzip.
+The input file can be plaintext (ASCII) or gzip-compressed plaintext (with the extension ".gz")
+
+See also [`remove_duplicate_sequences`](@ref).
 """
 function read_fasta_alignment(filename::AbstractString, max_gap_fraction::Real)
     max_gap_fraction = Float64(max_gap_fraction)
@@ -84,8 +89,7 @@ end
 
 let alphabet = [ 1,21, 2, 3, 4, 5, 6, 7, 8,21, 9,10,11,12,21,13,14,15,16,17,21,18,19,21,20]
                # A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y
-    global letter2num
-    function letter2num(c::Union{Char,UInt8})
+    global function letter2num(c::Union{Char,UInt8})
         i = UInt8(c) - 0x40
         1 <= i <= 25 && return alphabet[i]
         return 21
