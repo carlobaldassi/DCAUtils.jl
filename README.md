@@ -21,7 +21,7 @@ See the [documentation][docs-url] for details.
 [codecov-img]: https://codecov.io/gh/carlobaldassi/DCAUtils.jl/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/carlobaldassi/DCAUtils.jl
 
-[docs-img]: https://img.shields.io/badge/docs-dev-blue.svg
-[docs-url]: https://carlobaldassi.github.io/DCAUtils.jl/dev
+[docs-img]: https://img.shields.io/badge/docs-stable-blue.svg
+[docs-url]: https://carlobaldassi.github.io/DCAUtils.jl/stable
 
 [GaussDCA]: https://github.com/carlobaldassi/GaussDCA.jl
