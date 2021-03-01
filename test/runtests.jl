@@ -86,7 +86,7 @@ end
     end
     # additional test for very small Z (issue #2)
     Z = Int8[1 1; 2 2; 1 2]
-    W, Meff = compute_weights(Z, 0.9)
+    W, Meff = compute_weights(Z, 0.9; verbose = false)
     @test W ≈ [0.5, 0.5]
     @test Meff ≈ 1.0
 end
