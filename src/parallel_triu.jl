@@ -46,13 +46,9 @@ const TriuInd = Tuple{Tuple{Int,Int},Tuple{Int,Int},Int}
 function ptriu(sz::Int, RT::Type, func::Function, args...)
     tot_inds = (sz * (sz-1)) ÷ 2
     # nw = nworkers() # use this for multi-processing
-    nw = nthreads()
+    nw = min(nthreads(), tot_inds)
 
-    if tot_inds ≥ nw
-        inds_dist = diff([round(Int,x) for x in range(1, tot_inds+1, length=nw+1)])
-    else
-        inds_dist = [ones(Int, tot_inds); zeros(Int, nw-tot_inds)]
-    end
+    inds_dist = diff([round(Int,x) for x in range(1, tot_inds+1, length=nw+1)])
 
     inds = Array{TriuInd}(undef, nw)
     i0, j0 = 1, 2

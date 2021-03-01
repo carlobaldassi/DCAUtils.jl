@@ -43,6 +43,10 @@ end
             @test θ2 ≈ resdict["θ"][(mgf,rd)]
         end
     end
+    # additional test for very small Z (issue #2)
+    Z = Int8[1 1; 2 2; 1 2]
+    θ = compute_theta(Z)
+    @test θ ≈ 0.1824
 end
 
 @testset "compute dists" begin
@@ -58,6 +62,10 @@ end
             @test D2 ≈ resdict["D"][(mgf,rd)]
         end
     end
+    # additional test for very small Z (issue #2)
+    Z = Int8[1 1; 2 2; 1 2]
+    D = compute_dists(Z)
+    @test D ≈ [0 1/3; 1/3 0]
 end
 
 @testset "compute weights" begin
@@ -76,6 +84,11 @@ end
             @test W2 ≈ resdict["W"][(mgf, rd, θ)]
         end
     end
+    # additional test for very small Z (issue #2)
+    Z = Int8[1 1; 2 2; 1 2]
+    W, Meff = compute_weights(Z, 0.9)
+    @test W ≈ [0.5, 0.5]
+    @test Meff ≈ 1.0
 end
 
 @testset "compute weighted frequencies" begin
@@ -93,6 +106,12 @@ end
             @test Pij_true ≈ resdict["Pij_true"][(mgf, rd, θ)]
         end
     end
+    # additional test for very small Z (issue #2)
+    Z = Int8[1 1; 2 2; 1 2]
+    W = [0.4, 0.8]
+    Pi_true, Pij_true = compute_weighted_frequencies(Z, W)
+    @test Pi_true ≈ [1, 0, 1/3]
+    @test Pij_true ≈ [1 0 1/3; 0 0 0; 1/3 0 1/3]
 end
 
 @testset "add pseudocount" begin
