@@ -5,6 +5,7 @@ using Test
 using JLD2
 using LinearAlgebra
 using LazyArtifacts
+using CodecZlib
 
 datadir = artifact"test_data"
 
